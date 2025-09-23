@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
         $event = new Event();
         $event->event_name = $request->input('event_name');
@@ -35,7 +36,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return $event;
     }
 
     /**
@@ -43,7 +44,10 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        if ($event->update($request->all())) {
+            return response()->json(['success' => true, 'event' => $event]);
+        }
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -51,6 +55,9 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        if ($event->delete()) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);
     }
 }
