@@ -13,7 +13,7 @@ class VenueController extends Controller
      */
     public function index()
     {
-        //
+        return Venue::all();
     }
 
     /**
@@ -21,7 +21,9 @@ class VenueController extends Controller
      */
     public function store(StoreVenueRequest $request)
     {
-        //
+        $venue = new Venue($request->validated());
+        $venue->save();
+        return response()->json(['success' => true, 'venue' => $venue]);
     }
 
     /**
@@ -29,7 +31,7 @@ class VenueController extends Controller
      */
     public function show(Venue $venue)
     {
-        //
+        return response()->json(['success' => true, 'venue' => $venue]);
     }
 
     /**
@@ -37,7 +39,10 @@ class VenueController extends Controller
      */
     public function update(UpdateVenueRequest $request, Venue $venue)
     {
-        //
+        if ($venue->update($request->validated())) {
+            return response()->json(['success' => true, 'venue' => $venue]);
+        }
+        return response()->json(['success' => false, 'venue' => $venue]);
     }
 
     /**
@@ -45,6 +50,9 @@ class VenueController extends Controller
      */
     public function destroy(Venue $venue)
     {
-        //
+        if ($venue->delete()) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);
     }
 }
