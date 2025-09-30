@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVenueRequest;
 use App\Http\Requests\UpdateVenueRequest;
 use App\Models\Venue;
+use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Venue::all();
+        return Venue::with(['events'])
+            ->where('venue_max_capacity', '>', $request->input('capacity'))
+            ->orWhere('venue_status', false)
+            ->get();
     }
 
     /**
@@ -31,7 +35,10 @@ class VenueController extends Controller
      */
     public function show(Venue $venue)
     {
-        return response()->json(['success' => true, 'venue' => $venue]);
+        return response()->json([
+            'success' => true,
+            'venue' => $venue->load('events'),
+        ]);
     }
 
     /**
