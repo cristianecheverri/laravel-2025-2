@@ -18,5 +18,5 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::apiResource('events', EventController::class);
-    Route::apiResource('venues', VenueController::class);
+//    Route::apiResource('venues', VenueController::class);
 });
