@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\EventController;
 use App\Http\Controllers\Web\VenueController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,4 +24,5 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::resource('venues', VenueController::class);
+    Route::resource('events', EventController::class);
 });
